@@ -7,24 +7,6 @@ import 'package:weather/feature/home/presentation/home_viewmodel.dart';
 class Home extends StatelessWidget {
   const Home({super.key});
 
-  void _navigateToChangeLocation(
-      BuildContext context, HomeViewModel viewModel) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            ChangeLocation(onCityChanged: (cityName) {
-          viewModel.getWeatherByCity(cityName);
-        }),
-        transitionDuration: Duration.zero, // No animation duration
-        reverseTransitionDuration: Duration.zero, // No reverse animation
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return child; // No transition animation
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final viewModel = GetIt.I.get<HomeViewModel>();
@@ -58,25 +40,25 @@ class Home extends StatelessWidget {
                       )
                     else if (viewModel.weatherData != null) ...[
                       Text(
-                        viewModel.weatherData!.cityName,
+                        "${viewModel.weatherData?.cityName}",
                         style: const TextStyle(
                             fontSize: 32, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        "Temperature: ${viewModel.weatherData!.temperature}°C",
+                        "Temperature: ${viewModel.weatherData?.temperature}°C",
                         style: const TextStyle(fontSize: 20),
                       ),
                       Text(
-                        "Humidity: ${viewModel.weatherData!.humidity}%",
+                        "Humidity: ${viewModel.weatherData?.humidity}%",
                         style: const TextStyle(fontSize: 20),
                       ),
                       Text(
-                        "Wind Speed: ${viewModel.weatherData!.windSpeed} m/s",
+                        "Wind Speed: ${viewModel.weatherData?.windSpeed} m/s",
                         style: const TextStyle(fontSize: 20),
                       ),
                       Text(
-                        "Weather: ${viewModel.weatherData!.description}",
+                        "Weather: ${viewModel.weatherData?.description}",
                         style: const TextStyle(fontSize: 20),
                       ),
                     ],
@@ -91,6 +73,24 @@ class Home extends StatelessWidget {
               ),
             ),
           );
+        },
+      ),
+    );
+  }
+
+  void _navigateToChangeLocation(
+      BuildContext context, HomeViewModel viewModel) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            ChangeLocation(onCityChanged: (cityName) {
+          viewModel.getWeatherByCity(cityName);
+        }),
+        transitionDuration: Duration.zero, // No animation duration
+        reverseTransitionDuration: Duration.zero, // No reverse animation
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child; // No transition animation
         },
       ),
     );
